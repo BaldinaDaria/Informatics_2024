@@ -23,7 +23,6 @@ func (c *Cat) Info() string {
 }
 
 func RunLab6() {
-
 	myCat := Cat{name: "Барсик", age: 7, breed: "Мейн-кун"}
 
 	fmt.Println("Возраст кошки:", myCat.GetAge())
