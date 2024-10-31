@@ -5,7 +5,7 @@ import (
     "math"
 )
 
-func main(){
+func main() {
     bA := 2.5
     xStart := 1.28
     xEnd := 3.28
