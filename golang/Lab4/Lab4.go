@@ -3,7 +3,6 @@ package Lab4
 import (
 	"fmt"
 	"math"
-	"Lab4"
 )
 
 func calculateY(b float64, x float64) float64 {
