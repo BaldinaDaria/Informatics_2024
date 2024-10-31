@@ -2,7 +2,6 @@ package Lab6
 
 import (
 	"fmt"
-	"Lab6"
 )
 
 type Cat struct {
