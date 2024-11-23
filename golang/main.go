@@ -7,5 +7,5 @@ import (
 )
 func main() {
 	fmt.Println("Балдина Дарья")
-	4lab.RunLab4()	
-}
+	Lab4.RunLab4()
+}	
