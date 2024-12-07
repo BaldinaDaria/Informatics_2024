@@ -1,4 +1,4 @@
-package Lab4
+package Lab8
 
 import (
 	"bufio"
@@ -30,7 +30,7 @@ func taskB(bB float64, xValues []float64) []float64 {
 	return results
 }
 
-func RunLab4() {
+func RunLab8() {
 	filename := "input.txt"
 
 	values, err := readFile(filename)
