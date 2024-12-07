@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func calculateY(b, x float64) float64 {
+func calcY(b, x float64) float64 {
 	denominator := math.Cbrt(math.Pow(b, 3) + math.Pow(x, 3))
 	if denominator == 0 {
 		return math.Inf(1)
@@ -19,7 +19,7 @@ func calculateY(b, x float64) float64 {
 func taskA(bA, xStart, xEnd, deltaX float64) []float64 {
 	var results []float64
 	for x := xStart; x <= xEnd; x += deltaX {
-		y := calculateY(bA, x)
+		y := calcY(bA, x)
 		results = append(results, y)
 	}
 	return results
@@ -28,7 +28,7 @@ func taskA(bA, xStart, xEnd, deltaX float64) []float64 {
 func taskB(bB float64, xValues []float64) []float64 {
 	var results []float64
 	for _, x := range xValues {
-		y := calculateY(bB, x)
+		y := calcY(bB, x)
 		results = append(results, y)
 	}
 	return results
@@ -37,7 +37,7 @@ func taskB(bB float64, xValues []float64) []float64 {
 func RunLab8() {
 	const filename = "input.txt"
 
-	values, err := readFile(filename)
+	values, err := readInputFile(filename)
 	if err != nil {
 		fmt.Println("Ошибка при чтении файла:", err)
 		return
@@ -71,7 +71,7 @@ func RunLab8() {
 	}
 }
 
-func readFile(filename string) ([]float64, error) {
+func readInputFile(filename string) ([]float64, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
