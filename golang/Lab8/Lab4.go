@@ -7,23 +7,26 @@ import (
 	"os"
 	"strconv"
 )
-func calculateY(b float64, x float64) float64 {
+
+func calculateY(b, x float64) float64 {
 	denominator := math.Cbrt(math.Pow(b, 3) + math.Pow(x, 3))
 	if denominator == 0 {
 		return math.Inf(1)
 	}
 	return (1 + math.Pow(math.Sin(math.Pow(b, 3)+math.Pow(x, 3)), 2)) / denominator
 }
-func taskA(bA float64, xStart float64, xEnd float64, deltaX float64) []float64 {
-	results := []float64{}
+
+func taskA(bA, xStart, xEnd, deltaX float64) []float64 {
+	var results []float64
 	for x := xStart; x <= xEnd; x += deltaX {
 		y := calculateY(bA, x)
 		results = append(results, y)
 	}
 	return results
 }
+
 func taskB(bB float64, xValues []float64) []float64 {
-	results := []float64{}
+	var results []float64
 	for _, x := range xValues {
 		y := calculateY(bB, x)
 		results = append(results, y)
@@ -31,8 +34,8 @@ func taskB(bB float64, xValues []float64) []float64 {
 	return results
 }
 
-func RunLab8(){
-	filename := "input.txt"
+func RunLab8() {
+	const filename = "input.txt"
 
 	values, err := readFile(filename)
 	if err != nil {
@@ -67,6 +70,7 @@ func RunLab8(){
 		fmt.Printf("x: %.2f, y: %.4f\n", x, y)
 	}
 }
+
 func readFile(filename string) ([]float64, error) {
 	file, err := os.Open(filename)
 	if err != nil {
