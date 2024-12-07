@@ -9,7 +9,11 @@ import (
 )
 
 func calculateY(b float64, x float64) float64 {
-	return (1 + math.Pow(math.Sin(math.Pow(b, 3)+math.Pow(x, 3)), 2)) / math.Cbrt(math.Pow(b, 3)+math.Pow(x, 3))
+	denominator := math.Cbrt(math.Pow(b, 3) + math.Pow(x, 3))
+	if denominator == 0 {
+		return math.Inf(1)
+	}
+	return (1 + math.Pow(math.Sin(math.Pow(b, 3)+math.Pow(x, 3)), 2)) / denominator
 }
 
 func taskA(bA float64, xStart float64, xEnd float64, deltaX float64) []float64 {
