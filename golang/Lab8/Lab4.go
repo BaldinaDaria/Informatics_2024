@@ -37,7 +37,7 @@ func taskBA(bB float64, xValues []float64) []float64 {
 func RunLab8A() {
 	const filename = "input.txt"
 
-	values, err := readInputFile(filename)
+	values, err := readInputFileA(filename)
 	if err != nil {
 		fmt.Println("Ошибка при чтении файла:", err)
 		return
