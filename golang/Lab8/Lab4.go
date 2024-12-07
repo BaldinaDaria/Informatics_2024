@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func calcY(b, x float64) float64 {
+func calcYA(b, x float64) float64 {
 	denominator := math.Cbrt(math.Pow(b, 3) + math.Pow(x, 3))
 	if denominator == 0 {
 		return math.Inf(1)
@@ -16,25 +16,25 @@ func calcY(b, x float64) float64 {
 	return (1 + math.Pow(math.Sin(math.Pow(b, 3)+math.Pow(x, 3)), 2)) / denominator
 }
 
-func taskA(bA, xStart, xEnd, deltaX float64) []float64 {
+func taskAA(bA, xStart, xEnd, deltaX float64) []float64 {
 	var results []float64
 	for x := xStart; x <= xEnd; x += deltaX {
-		y := calcY(bA, x)
+		y := calcYA(bA, x)
 		results = append(results, y)
 	}
 	return results
 }
 
-func taskB(bB float64, xValues []float64) []float64 {
+func taskBA(bB float64, xValues []float64) []float64 {
 	var results []float64
 	for _, x := range xValues {
-		y := calcY(bB, x)
+		y := calcYA(bB, x)
 		results = append(results, y)
 	}
 	return results
 }
 
-func RunLab8() {
+func RunLab8A() {
 	const filename = "input.txt"
 
 	values, err := readInputFile(filename)
@@ -56,14 +56,14 @@ func RunLab8() {
 	xEnd := 3.28
 	deltaX := 0.4
 
-	resultsA := taskA(bA, xStart, xEnd, deltaX)
+	resultsA := taskAA(bA, xStart, xEnd, deltaX)
 	fmt.Println("Результаты задания A:")
 	for i, y := range resultsA {
 		x := xStart + float64(i)*deltaX
 		fmt.Printf("x: %.2f, y: %.4f\n", x, y)
 	}
 
-	resultsB := taskB(bB, xValues)
+	resultsB := taskBA(bB, xValues)
 	fmt.Println("\nРезультаты задания B:")
 	for i, y := range resultsB {
 		x := xValues[i]
