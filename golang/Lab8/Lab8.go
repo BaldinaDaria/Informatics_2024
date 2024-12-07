@@ -9,12 +9,16 @@ import (
 	"strings"
 )
 
-func calculateY(b float64, x float64) float64 {
-	return (1 + math.Pow(math.Sin(math.Pow(b, 3)+math.Pow(x, 3)), 2)) / math.Cbrt(math.Pow(b, 3)+math.Pow(x, 3))
+func calculateY (b, x float64) float64 {
+	denominator := math.Cbrt(math.Pow(b, 3) + math.Pow(x, 3))
+	if denominator == 0 {
+		return math.Inf(1)
+	}
+	return (1 + math.Pow(math.Sin(math.Pow(b, 3)+math.Pow(x, 3)), 2)) / denominator
 }
 
-func taskA(bA float64, xStart float64, xEnd float64, deltaX float64) []float64 {
-	results := []float64{}
+func taskA(bA, xStart, xEnd, deltaX float64) []float64 {
+	var results []float64
 	for x := xStart; x <= xEnd; x += deltaX {
 		y := calculateY(bA, x)
 		results = append(results, y)
@@ -23,7 +27,7 @@ func taskA(bA float64, xStart float64, xEnd float64, deltaX float64) []float64 {
 }
 
 func taskB(bB float64, xValues []float64) []float64 {
-	results := []float64{}
+	var results []float64
 	for _, x := range xValues {
 		y := calculateY(bB, x)
 		results = append(results, y)
@@ -32,7 +36,7 @@ func taskB(bB float64, xValues []float64) []float64 {
 }
 
 func RunLab8() {
-	filename := "input.txt"
+	const filename = "input.txt"
 
 	createAndWriteFile(filename)
 
@@ -49,7 +53,6 @@ func RunLab8() {
 
 	bA := values[0]
 	bB := values[1]
-
 	xValues := values[2:]
 
 	xStart := 1.28
@@ -96,7 +99,9 @@ func createAndWriteFile(filename string) {
 		writer.WriteString(text + "\n")
 	}
 
-	writer.Flush()
+	if err := writer.Flush(); err != nil {
+		fmt.Println("Ошибка при записи данных в файл:", err)
+	}
 	fmt.Println("Данные успешно записаны в файл:", filename)
 }
 
@@ -126,7 +131,7 @@ func readFile(filename string) ([]float64, error) {
 	return values, nil
 }
 
-func searchInFile(filename string, searchTerm string) {
+func searchInFile(filename, searchTerm string) {
 	file, err := os.Open(filename)
 	if err != nil {
 		fmt.Println("Ошибка при открытии файла:", err)
