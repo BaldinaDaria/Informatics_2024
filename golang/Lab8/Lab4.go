@@ -71,7 +71,7 @@ func RunLab8A() {
 	}
 }
 
-func readInputFile(filename string) ([]float64, error) {
+func readFile(filename string) ([]float64, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
