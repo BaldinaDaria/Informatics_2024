@@ -9,6 +9,14 @@ import (
 	"strings"
 )
 
+type Task struct {
+	A        float64
+	B        float64
+	XValues  []float64
+	ResultsA []float64
+	ResultsB []float64
+}
+
 func calcY(b, x float64) float64 {
 	denominator := math.Cbrt(math.Pow(b, 3) + math.Pow(x, 3))
 	if denominator == 0 {
@@ -50,37 +58,33 @@ func RunLab8() {
 		return
 	}
 
-	a := values[0]
-	b := values[1]
-	xValues := values[2:]
+	task := Task{
+		A:       values[0],
+		B:       values[1],
+		XValues: values[2:],
+	}
 
 	xStart := 1.28
 	xEnd := 3.28
 	deltaX := 0.4
 
-	resultsA := taskA(a, xStart, xEnd, deltaX)
+	task.ResultsA = taskA(task.A, xStart, xEnd, deltaX)
 	fmt.Println("Результаты задания A:")
-	for i, y := range resultsA {
+	for i, y := range task.ResultsA {
 		x := xStart + float64(i)*deltaX
 		fmt.Printf("x: %.2f, y: %.4f\n", x, y)
 	}
 
-	resultsB := taskB(b, xValues)
+	task.ResultsB = taskB(task.B, task.XValues)
 	fmt.Println("\nРезультаты задания B:")
-	for i, y := range resultsB {
-		x := xValues[i]
+	for i, y := range task.ResultsB {
+		x := task.XValues[i]
 		fmt.Printf("x: %.2f, y: %.4f\n", x, y)
 	}
 
-	err = writeOutputFile(outputFilename, resultsA, resultsB, xStart, deltaX, xValues)
+	err = writeOutputFile(outputFilename, task.ResultsA, task.ResultsB, xStart, deltaX, task.XValues)
 	if err != nil {
 		fmt.Println("Ошибка при записи в файл:", err)
-		return
-	}
-
-	err = writeDataToFile(outputFilename)
-	if err != nil {
-		fmt.Println("Ошибка при записи данных в файл:", err)
 		return
 	}
 
@@ -147,29 +151,8 @@ func writeOutputFile(filename string, resultsA, resultsB []float64, xStart, delt
 		writer.WriteString(fmt.Sprintf("x: %.2f, y: %.4f\n", x, y))
 	}
 
-	return writer.Flush()
-}
-
-func writeDataToFile(filename string) error {
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	writer := bufio.NewWriter(file)
-	fmt.Println("Введите данные для записи в файл (введите 'exit' для выхода):")
-
-	scanner := bufio.NewScanner(os.Stdin)
-	for {
-		scanner.Scan()
-		line := scanner.Text()
-		if line == "exit" {
-			break
-		}
-		writer.WriteString(line + "\n")
-	}
-	return writer.Flush()
+	writer.Flush()
+	return nil
 }
 
 func displayFileContents(filename string) error {
@@ -184,7 +167,10 @@ func displayFileContents(filename string) error {
 	for scanner.Scan() {
 		fmt.Println(scanner.Text())
 	}
-	return scanner.Err()
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func searchInFile(filename, searchTerm string) error {
@@ -195,17 +181,21 @@ func searchInFile(filename, searchTerm string) error {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	fmt.Printf("Результаты поиска для '%s':\n", searchTerm)
 	found := false
-	fmt.Printf("\nПоиск текста '%s' в файле:\n", searchTerm)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, searchTerm) {
-			fmt.Printf("Найдено: %s\n", line)
+			fmt.Println(line)
 			found = true
 		}
 	}
-	if !found {
-		fmt.Println("Текст не найден.")
+	if err := scanner.Err(); err != nil {
+		return err
 	}
-	return scanner.Err()
+
+	if !found {
+		fmt.Println("Совпадений не найдено.")
+	}
+	return nil
 }
